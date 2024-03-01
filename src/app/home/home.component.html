@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+<main>
+  <form [formGroup]="bookGroup" (submit)="createOrUpdateBook()">
+    <label for="name">Name</label>
+    <input
+      required
+      placeholder="Book Name"
+      formControlName="bookName"
+      id="name"
+      type="text"
+      [class.invalid]="
+        bookGroup.get('bookName')?.invalid &&
+        (bookGroup.get('bookName')?.dirty || bookGroup.get('bookName')?.touched)
+      "
+    />
+
+    <label for="quantity">Quantity</label>
+    <input
+      required
+      placeholder="quantity"
+      formControlName="quantity"
+      id="quantity"
+      type="number"
+      [class.invalid]="
+        bookGroup.get('quantity')?.invalid &&
+        (bookGroup.get('quantity')?.dirty || bookGroup.get('quantity')?.touched)
+      "
+    />
+
+    <label for="author">Author</label>
+    <input
+      required
+      placeholder="Book author"
+      formControlName="authorName"
+      id="author"
+      type="text"
+      [class.invalid]="
+        bookGroup.get('authorName')?.invalid &&
+        (bookGroup.get('authorName')?.dirty ||
+          bookGroup.get('authorName')?.touched)
+      "
+    />
+
+    <button type="submit" [disabled]="bookGroup.invalid">
+      {{ bookGroup.value.bookId !== "-1" ? "Edit" : "Add" }} book
+    </button>
+  </form>
+
+  <div>
+    <h1>My Books</h1>
+    <ul>
+      <li *ngFor="let book of books; let i = index">
+        <span>Title:{{ book.bookName }}</span>
+        <span>Author:{{ book.authorName }}</span>
+        <span>Quantity: {{ book.quantity }}</span>
+        <div>
+          <button (click)="deleteBook(i)">Delete</button>
+          <button (click)="startEdit(i)">Edit</button>
+        </div>
+        <app-book-card [book]="book"></app-book-card>
+      </li>
+    </ul>
+  </div>
+</main>
